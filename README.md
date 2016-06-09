@@ -1,2 +1,3 @@
 # i3blocks
-custom blocklets for my i3 statusbar
+
+Scripts inspired by the official i3blocks, i3blocks-contrib, and Anachron's config.
