@@ -1,26 +1,36 @@
 #!/bin/bash
 
 # Left click
-if [[ "${BLOCK_BUTTON}" -eq 1 ]]; then
+if [[ "${BLOCK_BUTTON}" -eq 4 ]]; then
   amixer -q sset Master 5%+
 # Middle click
-elif [[ "${BLOCK_BUTTON}" -eq 2 ]]; then
+elif [[ "${BLOCK_BUTTON}" -eq 1 ]]; then
   amixer -q sset Master toggle
 # Right click
-elif [[ "${BLOCK_BUTTON}" -eq 3 ]]; then
+elif [[ "${BLOCK_BUTTON}" -eq 5 ]]; then
   amixer -q sset Master 5%-
 fi
 
 statusLine=$(amixer get Master | tail -n 1)
 status=$(echo "${statusLine}" | grep -wo "on")
-volume=$(echo "${statusLine}" | awk -F ' ' '{print $5}' | tr -d '[]%')
+volume=$(echo "${statusLine}" | awk -F ' ' '{print $4}' | tr -d '[]%')
 
 if [[ "${status}" == "on" ]]; then
-  echo "${volume}%"
-  echo "${volume}%"
-  echo ""
+  if [[ "${volume}" -eq "100" ]]; then
+    echo "${volume}%"
+    echo "${volume}%"
+    echo ""
+  elif [[ "${volume}" -ge "10" ]]; then
+    echo " ${volume}%"
+    echo " ${volume}%"
+    echo ""
+  else
+    echo "  ${volume}%"
+    echo "  ${volume}%"
+    echo ""
+  fi
 else
-  echo "off"
-  echo "off"
+  echo "mute"
+  echo "mute"
   echo ""
 fi

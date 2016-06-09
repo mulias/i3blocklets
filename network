@@ -1,23 +1,26 @@
 #!/bin/bash
 
-device="${BLOCK_INSTANCE:-wlan0}"
-status=$(cat /sys/class/net/${device}/operstate)
+if [[ "${BLOCK_BUTTON}" -eq 1 ]]; then
+  connman-gtk &
+fi
 
-URGENT_VALUE=20
+wired_device=$(echo "${BLOCK_INSTANCE}" | awk -F ';' '{print $1}')
+wireless_device=$(echo "${BLOCK_INSTANCE}" | awk -F ';' '{print $2}')
 
-if [[ "${status}" == "up" ]]; then
-  if [[ -d "/sys/class/net/${device}/wireless" ]]; then
-    quality=$(grep ${device} /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
-    echo "${quality}%"
-    echo "${quality}%"
-    echo ""
+wired_status=$(cat /sys/class/net/${wired_device}/operstate)
+wireless_status=$(cat /sys/class/net/${wireless_device}/operstate)
 
-    if [[ "${quality}" -le "${URGENT_VALUE}" ]]; then
-      exit 33
-    fi
-  else
-    echo "on"
-    echo "on"
-    echo ""
-  fi
+if [[ "${wired_status}" == "up" ]]; then
+  echo "   wired"
+  echo "   wired"
+  echo ""
+elif [[ "${wireless_status}" == "up" ]]; then
+  quality=$(grep ${wireless_device} /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
+  echo "  ${quality}%"
+  echo "  ${quality}%"
+  echo ""
+else
+  echo "  ---"
+  echo "  0%"
+  echo ""
 fi
