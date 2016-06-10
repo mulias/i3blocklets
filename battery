@@ -9,7 +9,7 @@ if [[ "${BATTERY_INFO}" = "" ]]; then
   echo "---"
   echo "---"
   echo ""
-if [[ "${BATTERY_STATE}" = "Charging" && "${TIME}" != "" ]]; then
+elif [[ "${BATTERY_STATE}" = "Charging" && "${TIME}" != "" ]]; then
   echo "+${TIME}"
   echo "+${TIME}"
   echo ""
