@@ -1,15 +1,10 @@
 #!/bin/bash
 
-# Left click
-if [[ "${BLOCK_BUTTON}" -eq 4 ]]; then
-  amixer -q sset Master 5%+
-# Middle click
-elif [[ "${BLOCK_BUTTON}" -eq 1 ]]; then
-  amixer -q sset Master toggle
-# Right click
-elif [[ "${BLOCK_BUTTON}" -eq 5 ]]; then
-  amixer -q sset Master 5%-
-fi
+case $BLOCK_BUTTON in
+  1) amixer -q sset Master toggle ;;  # left click, mute/unmute
+  4) amixer -q sset Master 5%+ ;; # scroll up, increase
+  5) amixer -q sset Master 5%- ;; # scroll down, decrease
+esac
 
 statusLine=$(amixer get Master | tail -n 1)
 status=$(echo "${statusLine}" | grep -wo "on")
