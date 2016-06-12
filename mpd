@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# block until the status of mpd changes
+mpd idle &> /dev/null
+
+song=$(mpc current)
+
+if [[ "${song}" == "" ]]; then
+  exit
+fi
+
+if [[ $(mpc --format "" | grep playing) ]]; then
+  song="  ${song}" 
+else
+  song="  ${song}" 
+fi
+
+echo "${song}"
+echo "${song}"
+echo ""
