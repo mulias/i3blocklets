@@ -16,11 +16,22 @@ if [[ "${wired_status}" == "up" ]]; then
   echo ""
 elif [[ "${wireless_status}" == "up" ]]; then
   quality=$(grep ${wireless_device} /proc/net/wireless | awk '{ print int($3 * 100 / 70) }')
-  echo "  ${quality}%"
-  echo "  ${quality}%"
-  echo ""
+  
+  if [[ "${quality}" -eq "100" ]]; then
+    echo "  ${quality}%"
+    echo "  ${quality}%"
+    echo ""
+  elif [[ "${quality}" -ge "10" ]]; then
+    echo "   ${quality}%"
+    echo "   ${quality}%"
+    echo ""
+  else
+    echo "    ${quality}%"
+    echo "    ${quality}%"
+    echo ""
+  fi
 else
-  echo "  ---"
-  echo "  0%"
+  echo "   ---"
+  echo "   ---"
   echo ""
 fi
